@@ -28,6 +28,15 @@ const Home = () => {
           
           <div className="container" id="container">
                 <Product product={product}></Product>
+                <Product product={product}></Product>
+                <Product product={product}></Product>
+                <Product product={product}></Product>
+
+                <Product product={product}></Product>
+                <Product product={product}></Product>
+                <Product product={product}></Product>
+                <Product product={product}></Product>
+
           </div>
   </Fragment>
 }
