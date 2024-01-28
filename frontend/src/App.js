@@ -8,6 +8,7 @@ import Home from "./component/Home/Home.js"
 
 
 
+
 function App() {
   React.useEffect(() =>{
     webFont.load({
@@ -22,6 +23,7 @@ function App() {
       <Header></Header>
       <Routes>
       <Route exact path='/' Component={Home}></Route>
+     
       </Routes>
 
 
