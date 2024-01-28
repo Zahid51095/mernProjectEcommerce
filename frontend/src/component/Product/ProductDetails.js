@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { getProductDetails } from "../../actions/productAction";
 import { useParams } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
+import ReviewCard from "./ReviewCard.js";
+
 
 const ProductDetails = ({ match }) => {
   const { id } = useParams();
@@ -76,6 +78,20 @@ const ProductDetails = ({ match }) => {
               </button>
         </div>
       </div>
+      
+      <h3 className="reviewsHeading">REVIEWS</h3>
+
+      {product.reviews && product.reviews[0] ? (
+            <div className="reviews">
+              {product.reviews &&
+                product.reviews.map((review) => (
+                  <ReviewCard key={review._id} review={review} />
+                ))}
+            </div>
+          ) : (
+            <p className="noReviews">No Reviews Yet</p>
+          )}
+
     </Fragment>
   );
 };
