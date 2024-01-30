@@ -31,8 +31,8 @@ const Products = ({ match }) => {
         //   dispatch(clearErrors());
         // }
     
-        dispatch(getProduct(keyword));
-      }, [dispatch, keyword ]);
+        dispatch(getProduct(keyword, currentPage));
+      }, [dispatch, keyword, currentPage]);
     
 
 
@@ -48,23 +48,25 @@ const Products = ({ match }) => {
               ))}
           </div>
           
-          <div className="paginationBox">
-          <Pagination
-                activePage={currentPage}
-                itemsCountPerPage={resultPerPage}
-                totalItemsCount={productsCount}
-                onChange={setCurrentPageNo}
-                nextPageText="Next"
-                prevPageText="Prev"
-                firstPageText="1st"
-                lastPageText="Last"
-                itemClass="page-item"
-                linkClass="page-link"
-                activeClass="pageItemActive"
-                activeLinkClass="pageLinkActive"
-              />
-
-          </div>
+         {resultPerPage < productsCount && (
+           <div className="paginationBox">
+           <Pagination
+                 activePage={currentPage}
+                 itemsCountPerPage={resultPerPage}
+                 totalItemsCount={productsCount}
+                 onChange={setCurrentPageNo}
+                 nextPageText="Next"
+                 prevPageText="Prev"
+                 firstPageText="1st"
+                 lastPageText="Last"
+                 itemClass="page-item"
+                 linkClass="page-link"
+                 activeClass="pageItemActive"
+                 activeLinkClass="pageLinkActive"
+               />
+ 
+           </div>
+         )}
     </Fragment>
     }
   </Fragment>

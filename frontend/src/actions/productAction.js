@@ -3,11 +3,11 @@ import {ALL_PRODUCT_FAIL, ALL_PRODUCT_REQUEST, ALL_PRODUCT_SUCCESS, CLEAR_ERRORS
 
 
 // Get All Products
-export const getProduct = (keyword = "") => async (dispatch) => {
+export const getProduct = (keyword = "", currentPage = 1) => async (dispatch) => {
     try {
         dispatch({ type: ALL_PRODUCT_REQUEST });
 
-        let link = `/api/v1/products?keyword=${keyword}`; 
+        let link = `/api/v1/products?keyword=${keyword}&page=${currentPage}`; 
   
         const { data } = await axios.get(link);
   
