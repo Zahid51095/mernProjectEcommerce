@@ -5,7 +5,7 @@ import { clearErrors, getProduct } from "../../actions/productAction";
 import Loader from "../layout/Loader/Loader";
 import ProductCard from "../Home/ProductCard";
 
-const Products = () => {
+const Products = ({ match }) => {
     const dispatch = useDispatch();
 
     const {
@@ -15,14 +15,16 @@ const Products = () => {
         productsCount,
       } = useSelector((state) => state.products);
 
+      const keyword = match.params.keyword;
+
       useEffect(() => {
         // if (error) {
         //   alert.error(error);
         //   dispatch(clearErrors());
         // }
     
-        dispatch(getProduct());
-      }, [dispatch ]);
+        dispatch(getProduct(keyword));
+      }, [dispatch, keyword ]);
     
 
 

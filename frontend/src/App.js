@@ -26,6 +26,7 @@ function App() {
         <Route exact path="/" component={Home}></Route>
         <Route exact path="/product/:id" component={ProductDetails}></Route>
         <Route exact path="/products" component={Products}></Route>
+        <Route path="/products/:keyword" component={Products}></Route>
         <Route exact path="/search" component={Search}></Route>
       </Switch>
 
