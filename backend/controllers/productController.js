@@ -31,6 +31,7 @@ exports.getAllProducts = catchAsyncErrors(
             success:true,
             products,
             productsCount,
+            resultPerPage,
         })
     }
 )
