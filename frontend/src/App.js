@@ -10,6 +10,7 @@ import Products from "./component/Product/Products.js"
 import Search from "./component/Product/Search.js"
 import { Switch } from "react-router-dom/cjs/react-router-dom.min.js";
 
+
 function App() {
   React.useEffect(() => {
     webFont.load({
