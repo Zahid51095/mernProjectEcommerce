@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from "react";
 import "./Products.css";
 import { useSelector, useDispatch } from "react-redux";
 import { clearErrors, getProduct } from "../../actions/productAction";
@@ -8,56 +8,63 @@ import Pagination from "react-js-pagination";
 import Slider from "@material-ui/core/Slider";
 import Typography from "@material-ui/core/Typography";
 
+const categories = [
+  "Laptop",
+  "Footwear",
+  "Bottom",
+  "Tops",
+  "Attire",
+  "Camera",
+  "SmartPhones",
+];
+
 const Products = ({ match }) => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [price, setPrice] = useState([0, 25000]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [price, setPrice] = useState([0, 25000]);
+  const [category, setCategory] = useState("");
 
-    const {
-        products,
-        loading,
-        error,
-        productsCount,
-        resultPerPage,
-      } = useSelector((state) => state.products);
+  const { products, loading, error, productsCount, resultPerPage } =
+    useSelector((state) => state.products);
 
-      const keyword = match.params.keyword;
+  const keyword = match.params.keyword;
 
-      const setCurrentPageNo = (e) => {
-        setCurrentPage(e);
-      };
+  const setCurrentPageNo = (e) => {
+    setCurrentPage(e);
+  };
 
-      const priceHandler = (event, newPrice) => {
-        setPrice(newPrice);
-      };
+  const priceHandler = (event, newPrice) => {
+    setPrice(newPrice);
+  };
 
-      useEffect(() => {
-        // if (error) {
-        //   alert.error(error);
-        //   dispatch(clearErrors());
-        // }
-    
-        dispatch(getProduct(keyword, currentPage, price));
-      }, [dispatch, keyword, currentPage, price]);
-    
+  useEffect(() => {
+    // if (error) {
+    //   alert.error(error);
+    //   dispatch(clearErrors());
+    // }
 
+    dispatch(getProduct(keyword, currentPage, price, category));
+  }, [dispatch, keyword, currentPage, price, category]);
 
-  return <Fragment>
-    {loading ? <Loader></Loader> : 
+  return (
     <Fragment>
-        <h2 className="productsHeading">Products</h2>
+      {loading ? (
+        <Loader></Loader>
+      ) : (
+        <Fragment>
+          <h2 className="productsHeading">Products</h2>
 
-        <div className="products">
+          <div className="products">
             {products &&
               products.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
           </div>
 
-          <div className='filterBox'>
-          <Typography>Price</Typography>
-          <Slider
+          <div className="filterBox">
+            <Typography>Price</Typography>
+            <Slider
               value={price}
               onChange={priceHandler}
               valueLabelDisplay="auto"
@@ -66,30 +73,43 @@ const Products = ({ match }) => {
               max={25000}
             />
 
-          </div>
-          
-         {resultPerPage < productsCount && (
-           <div className="paginationBox">
-           <Pagination
-                 activePage={currentPage}
-                 itemsCountPerPage={resultPerPage}
-                 totalItemsCount={productsCount}
-                 onChange={setCurrentPageNo}
-                 nextPageText="Next"
-                 prevPageText="Prev"
-                 firstPageText="1st"
-                 lastPageText="Last"
-                 itemClass="page-item"
-                 linkClass="page-link"
-                 activeClass="pageItemActive"
-                 activeLinkClass="pageLinkActive"
-               />
- 
-           </div>
-         )}
-    </Fragment>
-    }
-  </Fragment>
-}
+            <Typography>Categories</Typography>
+            <ul className="categoryBox">
+              {categories.map((category) => (
+                <li
+                  className="category-link"
+                  key={category}
+                  onClick={() => setCategory(category)}
+                >
+                  {category}
+                </li>
+              ))}
+            </ul>
 
-export default Products
+          </div>
+
+          {resultPerPage < productsCount && (
+            <div className="paginationBox">
+              <Pagination
+                activePage={currentPage}
+                itemsCountPerPage={resultPerPage}
+                totalItemsCount={productsCount}
+                onChange={setCurrentPageNo}
+                nextPageText="Next"
+                prevPageText="Prev"
+                firstPageText="1st"
+                lastPageText="Last"
+                itemClass="page-item"
+                linkClass="page-link"
+                activeClass="pageItemActive"
+                activeLinkClass="pageLinkActive"
+              />
+            </div>
+          )}
+        </Fragment>
+      )}
+    </Fragment>
+  );
+};
+
+export default Products;
