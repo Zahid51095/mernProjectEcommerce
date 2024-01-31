@@ -92,6 +92,9 @@
   color: tomato;
 }
 
+.filterBox > fieldset {
+  border: 1px solid rgba(0, 0, 0, 0.329);
+}
 
 @media screen and (max-width: 600px) {
   .filterBox {
