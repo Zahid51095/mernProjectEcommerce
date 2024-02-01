@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, useRef, useState, useEffect } from "react";
 import "./LoginSignUp.css";
 import Loader from "../layout/Loader/Loader";
 import { Link } from "react-router-dom";
@@ -6,7 +6,18 @@ import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import FaceIcon from "@material-ui/icons/Face";
 
-const LoginSignUp = () => {
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, login } from "../../actions/userAction";
+import { useAlert } from "react-alert";
+
+const LoginSignUp = ({ history }) => {
+  const dispatch = useDispatch();
+  const alert = useAlert();
+  
+  const { error, loading, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
+
   const loginTab = useRef(null);
   const registerTab = useRef(null);
   const switcherTab = useRef(null);
@@ -25,8 +36,9 @@ const LoginSignUp = () => {
   const [avatar, setAvatar] = useState("/Profile.png");
   const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
 
-  const loginSubmit = () => {
-    console.log("Login Form Submitted");
+  const loginSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login(loginEmail, loginPassword));
   };
 
   const registerSubmit = (e) => {
@@ -59,6 +71,18 @@ const LoginSignUp = () => {
     }
   };
 
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+
+    if(isAuthenticated) {
+        history.push("/account");
+    }
+
+  }, [dispatch, error, alert, history, isAuthenticated]);
+
   const switchTabs = (e, tab) => {
     if (tab === "login") {
       switcherTab.current.classList.add("shiftToNeutral");
@@ -78,47 +102,50 @@ const LoginSignUp = () => {
 
   return (
     <Fragment>
-      <div className="LoginSignUpContainer">
-        <div className="LoginSignUpBox">
-          <div>
-            <div className="login_signUp_toggle">
-              <p onClick={(e) => switchTabs(e, "login")}>LOGIN</p>
-              <p onClick={(e) => switchTabs(e, "register")}>REGISTER</p>
-            </div>
-            <button ref={switcherTab}></button>
-          </div>
-          <form className="loginForm" ref={loginTab} onSubmit={loginSubmit}>
-            <div className="loginEmail">
-              <MailOutlineIcon />
-              <input
-                type="email"
-                placeholder="Email"
-                required
-                value={loginEmail}
-                onChange={(e) => setLoginEmail(e.target.value)}
-              />
-            </div>
-            <div className="loginPassword">
-              <LockOpenIcon />
-              <input
-                type="password"
-                placeholder="Password"
-                required
-                value={loginPassword}
-                onChange={(e) => setLoginPassword(e.target.value)}
-              />
-            </div>
-            <Link to="/password/forgot">Forget Password ?</Link>
-            <input type="submit" value="Login" className="loginBtn" />
-          </form>
-          <form
-            className="signUpForm"
-            ref={registerTab}
-            encType="multipart/form-data"
-            onSubmit={registerSubmit}
-          >
-
-<div className="signUpName">
+      {loading ? (
+        <Loader></Loader>
+      ) : (
+        <Fragment>
+          <div className="LoginSignUpContainer">
+            <div className="LoginSignUpBox">
+              <div>
+                <div className="login_signUp_toggle">
+                  <p onClick={(e) => switchTabs(e, "login")}>LOGIN</p>
+                  <p onClick={(e) => switchTabs(e, "register")}>REGISTER</p>
+                </div>
+                <button ref={switcherTab}></button>
+              </div>
+              <form className="loginForm" ref={loginTab} onSubmit={loginSubmit}>
+                <div className="loginEmail">
+                  <MailOutlineIcon />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    required
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                  />
+                </div>
+                <div className="loginPassword">
+                  <LockOpenIcon />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    required
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                  />
+                </div>
+                <Link to="/password/forgot">Forget Password ?</Link>
+                <input type="submit" value="Login" className="loginBtn" />
+              </form>
+              <form
+                className="signUpForm"
+                ref={registerTab}
+                encType="multipart/form-data"
+                onSubmit={registerSubmit}
+              >
+                <div className="signUpName">
                   <FaceIcon />
                   <input
                     type="text"
@@ -160,10 +187,12 @@ const LoginSignUp = () => {
                     onChange={registerDataChange}
                   />
                 </div>
-                <input type="submit" value="Register" className="signUpBtn"/>
-          </form>
-        </div>
-      </div>
+                <input type="submit" value="Register" className="signUpBtn" />
+              </form>
+            </div>
+          </div>
+        </Fragment>
+      )}
     </Fragment>
   );
 };
