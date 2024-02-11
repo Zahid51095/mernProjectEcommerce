@@ -12,9 +12,15 @@ import { Switch } from "react-router-dom/cjs/react-router-dom.min.js";
 import LoginSignUp from "./component/User/LoginSignUp.js";
 import store from "./store"
 import { loadUser } from "./actions/userAction.js";
+import UserOptions from "./component/layout/Header/UserOptions.js";
+import { useSelector } from "react-redux";
 
 
 function App() {
+
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+
+
   React.useEffect(() => {
     webFont.load({
       google: {
@@ -29,6 +35,8 @@ function App() {
   return (
     <Router>
       <Header></Header>
+      {isAuthenticated && <UserOptions user={user} />}
+
       <Switch>
         <Route exact path="/" component={Home}></Route>
         <Route exact path="/product/:id" component={ProductDetails}></Route>
