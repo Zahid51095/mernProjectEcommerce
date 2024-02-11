@@ -10,6 +10,8 @@ import Products from "./component/Product/Products.js"
 import Search from "./component/Product/Search.js"
 import { Switch } from "react-router-dom/cjs/react-router-dom.min.js";
 import LoginSignUp from "./component/User/LoginSignUp.js";
+import store from "./store"
+import { loadUser } from "./actions/userAction.js";
 
 
 function App() {
@@ -19,6 +21,9 @@ function App() {
         families: ["Roboto", "Droid Sans", "Chilanka"],
       },
     });
+
+    store.dispatch(loadUser());
+
   }, []);
 
   return (
