@@ -14,6 +14,7 @@ import store from "./store"
 import { loadUser } from "./actions/userAction.js";
 import UserOptions from "./component/layout/Header/UserOptions.js";
 import { useSelector } from "react-redux";
+import Profile from "./component/User/Profile.js"
 
 
 function App() {
@@ -44,6 +45,8 @@ function App() {
         <Route path="/products/:keyword" component={Products}></Route>
 
         <Route exact path="/search" component={Search}></Route>
+
+        <Route exact path="/account" component={Profile}></Route>
 
         <Route exact path="/login" component={LoginSignUp}></Route>
       </Switch>
