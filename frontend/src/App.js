@@ -14,7 +14,8 @@ import store from "./store"
 import { loadUser } from "./actions/userAction.js";
 import UserOptions from "./component/layout/Header/UserOptions.js";
 import { useSelector } from "react-redux";
-import Profile from "./component/User/Profile.js"
+import Profile from "./component/User/Profile.js";
+import ProtectedRoute from "./component/Route/ProtectedRoute.js";
 
 
 function App() {
@@ -46,7 +47,7 @@ function App() {
 
         <Route exact path="/search" component={Search}></Route>
 
-        <Route exact path="/account" component={Profile}></Route>
+        <ProtectedRoute exact path="/account" component={Profile}></ProtectedRoute>
 
         <Route exact path="/login" component={LoginSignUp}></Route>
       </Switch>
