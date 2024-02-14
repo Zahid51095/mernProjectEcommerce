@@ -9,6 +9,7 @@ import ReviewCard from "./ReviewCard.js";
 import Loader from "../layout/Loader/Loader.js";
 import { useAlert } from "react-alert";
 import MetaData from "../layout/MetaData.js";
+import {addItemsToCart} from "../../actions/cartAction.js"
 
 const ProductDetails = ({ match }) => {
   const { id } = useParams();
@@ -42,6 +43,11 @@ const ProductDetails = ({ match }) => {
 
     const qty = quantity - 1;
     setQuantity(qty);
+  };
+
+  const addToCartHandler = () => {
+    dispatch(addItemsToCart(match.params.id, quantity));
+    alert.success("Item Added To Cart");
   };
 
   useEffect(() => {
@@ -91,7 +97,7 @@ const ProductDetails = ({ match }) => {
                     <input readOnly type="number" value={quantity} />
                     <button onClick={increaseQuantity}>+</button>
                   </div>
-                  <button>Add to Cart</button>
+                  <button onClick={addToCartHandler}>Add to Cart</button>
                 </div>
                 <p>
                   Status:
