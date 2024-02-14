@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import "./ProductDetails.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,14 +19,6 @@ const ProductDetails = ({ match }) => {
     (state) => state.productDetails
   );
 
-  useEffect(() => {
-    if (error) {
-        alert.error(error);
-        dispatch(clearErrors());
-      } 
-    dispatch(getProductDetails(id));
-  }, [dispatch, id, error, alert]);
-
   const options = {
     edit: false,
     color: "rgba(20,20,20,0.1)",
@@ -35,6 +27,31 @@ const ProductDetails = ({ match }) => {
     value: product.ratings,
     isHalf: true,
   };
+
+  const [quantity, setQuantity] = useState(1);
+
+  const increaseQuantity = () => {
+    if (product.Stock <= quantity) return;
+
+    const qty = quantity + 1;
+    setQuantity(qty);
+  };
+
+  const decreaseQuantity = () => {
+    if (1 >= quantity) return;
+
+    const qty = quantity - 1;
+    setQuantity(qty);
+  };
+
+  useEffect(() => {
+    if (error) {
+        alert.error(error);
+        dispatch(clearErrors());
+      } 
+    dispatch(getProductDetails(id));
+  }, [dispatch, id, error, alert]);
+
 
   return (
     <Fragment>
@@ -70,9 +87,9 @@ const ProductDetails = ({ match }) => {
                 <h1>{`$${product.price}`}</h1>
                 <div className="detailsBlock-3-1">
                   <div className="detailsBlock-3-1-1">
-                    <button>-</button>
-                    <input type="number" value="1" />
-                    <button>+</button>
+                    <button onClick={decreaseQuantity}>-</button>
+                    <input readOnly type="number" value={quantity} />
+                    <button onClick={increaseQuantity}>+</button>
                   </div>
                   <button>Add to Cart</button>
                 </div>
