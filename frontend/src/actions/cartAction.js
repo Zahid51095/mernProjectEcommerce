@@ -23,3 +23,13 @@ import {
   
     localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
   };
+
+  // REMOVE FROM CART
+export const removeItemsFromCart = (id) => async (dispatch, getState) => {
+  dispatch({
+    type: REMOVE_CART_ITEM,
+    payload: id,
+  });
+
+  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+};
