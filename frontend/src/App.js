@@ -2,15 +2,15 @@ import "./App.css";
 import Header from "./component/layout/Header/Header.js";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import webFont from "webfontloader";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "./component/layout/Footer/Footer.js";
 import Home from "./component/Home/Home.js";
 import ProductDetails from "./component/Product/ProductDetails.js";
-import Products from "./component/Product/Products.js"
-import Search from "./component/Product/Search.js"
+import Products from "./component/Product/Products.js";
+import Search from "./component/Product/Search.js";
 import { Switch } from "react-router-dom/cjs/react-router-dom.min.js";
 import LoginSignUp from "./component/User/LoginSignUp.js";
-import store from "./store"
+import store from "./store";
 import { loadUser } from "./actions/userAction.js";
 import UserOptions from "./component/layout/Header/UserOptions.js";
 import { useSelector } from "react-redux";
@@ -23,15 +23,23 @@ import ResetPassword from "./component/User/ResetPassword.js";
 import Cart from "./component/Cart/Cart.js";
 import Shipping from "./component/Cart/Shipping.js";
 import ConfirmOrder from "./component/Cart/ConfirmOrder.js";
-
-
+import axios from "axios";
+import Payment from "./component/Cart/Payment.js";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 function App() {
-
   const { isAuthenticated, user } = useSelector((state) => state.user);
 
+  const [stripeApiKey, setStripeApiKey] = useState("");
 
-  React.useEffect(() => {
+  async function getStripeApiKey() {
+    const { data } = await axios.get("/api/v1/stripeapikey");
+
+    setStripeApiKey(data.stripeApiKey);
+  }
+
+  useEffect(() => {
     webFont.load({
       google: {
         families: ["Roboto", "Droid Sans", "Chilanka"],
@@ -40,6 +48,7 @@ function App() {
 
     store.dispatch(loadUser());
 
+    getStripeApiKey();
   }, []);
 
   return (
@@ -55,15 +64,31 @@ function App() {
 
         <Route exact path="/search" component={Search}></Route>
 
-        <ProtectedRoute exact path="/account" component={Profile}></ProtectedRoute>
+        <ProtectedRoute
+          exact
+          path="/account"
+          component={Profile}
+        ></ProtectedRoute>
 
-        <ProtectedRoute exact path="/me/update" component={UpdateProfile}></ProtectedRoute>
+        <ProtectedRoute
+          exact
+          path="/me/update"
+          component={UpdateProfile}
+        ></ProtectedRoute>
 
-        <ProtectedRoute exact path="/password/update" component={UpdatePassword}></ProtectedRoute>
+        <ProtectedRoute
+          exact
+          path="/password/update"
+          component={UpdatePassword}
+        ></ProtectedRoute>
 
         <Route exact path="/password/forgot" component={ForgotPassword}></Route>
 
-        <Route exact path="/password/reset/:token" component={ResetPassword}></Route>
+        <Route
+          exact
+          path="/password/reset/:token"
+          component={ResetPassword}
+        ></Route>
 
         <Route exact path="/login" component={LoginSignUp}></Route>
 
@@ -73,6 +98,11 @@ function App() {
 
         <ProtectedRoute exact path="/order/confirm" component={ConfirmOrder} />
 
+        {stripeApiKey && (
+          <Elements stripe={loadStripe(stripeApiKey)}>
+            <ProtectedRoute exact path="/process/payment" component={Payment} />
+          </Elements>
+        )}
       </Switch>
 
       <Footer></Footer>
