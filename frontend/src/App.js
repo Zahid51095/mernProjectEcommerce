@@ -34,6 +34,7 @@ import Dashboard from "./component/Admin/Dashboard.js";
 import ProductList from "./component/Admin/ProductList.js";
 import NewProduct from "./component/Admin/NewProduct.js";
 import UpdateProduct from "./component/Admin/UpdateProduct.js";
+import OrderList from "./component/Admin/OrderList.js";
 
 
 function App() {
@@ -91,6 +92,19 @@ function App() {
         component={UpdateProduct}
       />
 
+<ProtectedRoute
+        isAdmin={true}
+        exact
+        path="/admin/product/:id"
+        component={UpdateProduct}
+      />
+
+<ProtectedRoute
+        isAdmin={true}
+        exact
+        path="/admin/orders"
+        component={OrderList}
+      />
       <Switch>
         <Route exact path="/" component={Home}></Route>
         <Route exact path="/product/:id" component={ProductDetails}></Route>
