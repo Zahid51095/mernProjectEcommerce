@@ -41,7 +41,7 @@ import UpdateUser from "./component/Admin/UpdateUser.js";
 import ProductReviews from "./component/Admin/ProductReviews.js";
 import Contact from "./component/layout/Contact/Contact.js";
 import About from "./component/layout/About/About.js";
-
+import NotFound from "./component/layout/Not Found/NotFound.js";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -66,6 +66,8 @@ function App() {
     getStripeApiKey();
   }, []);
 
+  window.addEventListener("contextmenu", (e) => e.preventDefault());
+
   return (
     <Router>
       <Header></Header>
@@ -76,70 +78,6 @@ function App() {
           <ProtectedRoute exact path="/process/payment" component={Payment} />
         </Elements>
       )}
-
-      <ProtectedRoute
-        isAdmin={true}
-        exact
-        path="/admin/products"
-        component={ProductList}
-      />
-
-<ProtectedRoute
-        isAdmin={true}
-        exact
-        path="/admin/product"
-        component={NewProduct}
-      />
-
-<ProtectedRoute
-        isAdmin={true}
-        exact
-        path="/admin/product/:id"
-        component={UpdateProduct}
-      />
-
-<ProtectedRoute
-        isAdmin={true}
-        exact
-        path="/admin/product/:id"
-        component={UpdateProduct}
-      />
-
-<ProtectedRoute
-        isAdmin={true}
-        exact
-        path="/admin/orders"
-        component={OrderList}
-      />
-
-<ProtectedRoute
-        isAdmin={true}
-        exact
-        path="/admin/order/:id"
-        component={ProcessOrder}
-      />
-
-<ProtectedRoute
-        isAdmin={true}
-        exact
-        path="/admin/users"
-        component={UsersList}
-      />
-
-<ProtectedRoute
-        isAdmin={true}
-        exact
-        path="/admin/user/:id"
-        component={UpdateUser}
-      />
-
-      
-<ProtectedRoute
-        isAdmin={true}
-        exact
-        path="/admin/reviews"
-        component={ProductReviews}
-      />
 
       <Switch>
         <Route exact path="/" component={Home}></Route>
@@ -199,7 +137,75 @@ function App() {
           path="/admin/dashboard"
           component={Dashboard}
         />
-        
+
+        <ProtectedRoute
+          isAdmin={true}
+          exact
+          path="/admin/products"
+          component={ProductList}
+        />
+
+        <ProtectedRoute
+          isAdmin={true}
+          exact
+          path="/admin/product"
+          component={NewProduct}
+        />
+
+        <ProtectedRoute
+          isAdmin={true}
+          exact
+          path="/admin/product/:id"
+          component={UpdateProduct}
+        />
+
+        <ProtectedRoute
+          isAdmin={true}
+          exact
+          path="/admin/product/:id"
+          component={UpdateProduct}
+        />
+
+        <ProtectedRoute
+          isAdmin={true}
+          exact
+          path="/admin/orders"
+          component={OrderList}
+        />
+
+        <ProtectedRoute
+          isAdmin={true}
+          exact
+          path="/admin/order/:id"
+          component={ProcessOrder}
+        />
+
+        <ProtectedRoute
+          isAdmin={true}
+          exact
+          path="/admin/users"
+          component={UsersList}
+        />
+
+        <ProtectedRoute
+          isAdmin={true}
+          exact
+          path="/admin/user/:id"
+          component={UpdateUser}
+        />
+
+        <ProtectedRoute
+          isAdmin={true}
+          exact
+          path="/admin/reviews"
+          component={ProductReviews}
+        />
+
+        <Route
+          component={
+            window.location.pathname === "/process/payment" ? null : NotFound
+          }
+        />
       </Switch>
 
       <Footer></Footer>
