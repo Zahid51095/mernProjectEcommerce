@@ -39,6 +39,8 @@ import ProcessOrder from "./component/Admin/ProcessOrder.js";
 import UsersList from "./component/Admin/UsersList.js";
 import UpdateUser from "./component/Admin/UpdateUser.js";
 import ProductReviews from "./component/Admin/ProductReviews.js";
+import Contact from "./component/layout/Contact/Contact.js";
+import About from "./component/layout/About/About.js";
 
 
 function App() {
@@ -146,6 +148,10 @@ function App() {
         <Route path="/products/:keyword" component={Products}></Route>
 
         <Route exact path="/search" component={Search}></Route>
+
+        <Route exact path="/contact" component={Contact} />
+
+        <Route exact path="/about" component={About} />
 
         <ProtectedRoute
           exact
